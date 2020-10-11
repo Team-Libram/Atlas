@@ -1,5 +1,8 @@
 # Atlas
-Technical University - Varna • FITA faculty • SIT speciality • Project name: "Library" <br />
+Technical University - Varna <br />
+  • FITA faculty <br />
+  • SIT speciality <br />
+  • Project name: "Library" <br />
 
 Written by: Peter Petkov and Miroslav Petrov <br />
 
