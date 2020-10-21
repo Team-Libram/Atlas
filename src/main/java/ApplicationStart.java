@@ -1,8 +1,14 @@
+import consts.UserType;
+import entities.identity.Account;
+import globals.Globals;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class ApplicationStart extends Application {
     @Override
@@ -18,22 +24,21 @@ public class ApplicationStart extends Application {
     }
 
     private static void initializeHibernate() {
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("library-persistence-unit");
-//        EntityManager em = emf.createEntityManager();
-//        em.getTransaction().begin();
-//
-//        User u = new User();
-//
-//        u.setName("Nikolay");
-//        u.setAge(69L);
-//        em.persist(u);
-//        u = null;
-//
-//        em.getTransaction().commit();
-//
-//        System.out.println(ApplicationStart.getUser(em));
-//
-//        em.close();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("library-persistence-unit");
+        Globals.setEntityManager(emf.createEntityManager());
+
+        Globals.getEntityManager().getTransaction().begin();
+
+        Account u = new Account();
+        u.setUsername("admin");
+        u.setType(UserType.Administrator);
+        u.setPassword("admin");
+
+        Globals.getEntityManager().persist(u);
+
+        Globals.getEntityManager().getTransaction().commit();
+
+        Globals.getEntityManager().close();
     }
 
     public static void main(String[] args) {
