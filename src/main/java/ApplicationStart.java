@@ -13,8 +13,28 @@ public class ApplicationStart extends Application {
         primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
+        ApplicationStart.initializeHibernate();
     }
 
+    private static void initializeHibernate() {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("library-persistence-unit");
+//        EntityManager em = emf.createEntityManager();
+//        em.getTransaction().begin();
+//
+//        User u = new User();
+//
+//        u.setName("Nikolay");
+//        u.setAge(69L);
+//        em.persist(u);
+//        u = null;
+//
+//        em.getTransaction().commit();
+//
+//        System.out.println(ApplicationStart.getUser(em));
+//
+//        em.close();
+    }
 
     public static void main(String[] args) {
         launch(args);
