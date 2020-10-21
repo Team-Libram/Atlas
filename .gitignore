@@ -33,3 +33,4 @@ packages/
 
 #Intellij IDEA configuration files
 .idea/*
+target/*
