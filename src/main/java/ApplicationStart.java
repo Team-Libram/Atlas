@@ -1,11 +1,13 @@
 import consts.UserType;
-import entities.identity.Account;
 import globals.Globals;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
+import managers.IdentityManager;
+import models.ApplicationUser;
+import models.IdentityResult;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -27,18 +29,15 @@ public class ApplicationStart extends Application {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("library-persistence-unit");
         Globals.setEntityManager(emf.createEntityManager());
 
-        Globals.getEntityManager().getTransaction().begin();
+        ApplicationUser user = new ApplicationUser();
+        user.setUsername("admin");
+        user.setName("Peter");
+        user.setAge(21L);
+        user.setType(UserType.Administrator);
 
-        Account u = new Account();
-        u.setUsername("admin");
-        u.setType(UserType.Administrator);
-        u.setPassword("admin");
 
-        Globals.getEntityManager().persist(u);
-
-        Globals.getEntityManager().getTransaction().commit();
-
-        Globals.getEntityManager().close();
+        IdentityManager identityManager = new IdentityManager();
+        IdentityResult result = identityManager.create(user, "admin");
     }
 
     public static void main(String[] args) {
