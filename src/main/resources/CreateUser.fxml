@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="692.0" prefWidth="1035.0" style="-fx-background-color: #bdbdbd;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateUserController">
+
+    <AnchorPane layoutX="312.0" layoutY="167.0" prefHeight="404.0" prefWidth="424.0" style="-fx-background-color: #424242;">
+        <Label layoutX="160.0" layoutY="32.0" prefHeight="50.0" prefWidth="104.0" text="Login" textFill="WHITE">
+            <font>
+                <Font name="Tahoma Bold" size="36.0" />
+            </font>
+        </Label>
+        <AnchorPane layoutX="169.0" layoutY="80.0" prefHeight="5.0" prefWidth="85.0" style="-fx-background-color: #b2ff59;" />
+        <TextField layoutX="108.0" layoutY="114.0" prefHeight="25.0" prefWidth="208.0" promptText="Username">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </TextField>
+        <TextField layoutX="108.0" layoutY="151.0" prefHeight="25.0" prefWidth="208.0" promptText="Name">
+            <font>
+                <Font name="System Bold Italic" size="12.0" />
+            </font>
+        </TextField>
+        <TextField layoutX="108.0" layoutY="190.0" prefHeight="25.0" prefWidth="208.0" promptText="Age">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </TextField>
+        <PasswordField layoutX="108.0" layoutY="227.0" prefHeight="25.0" prefWidth="208.0" promptText="Password">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </PasswordField>
+        <Button layoutX="160.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" style="-fx-background-radius: 90;" text="Login">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <ComboBox fx:id="comb" layoutX="108.0" layoutY="336.0" prefHeight="25.0" prefWidth="208.0" promptText="User Type" />
+    </AnchorPane>
+</AnchorPane>

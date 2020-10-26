@@ -3,13 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/11.0.1"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LibraryController">
-   <columnConstraints>
-      <ColumnConstraints/>
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints/>
-   </rowConstraints>
-   <Button mnemonicParsing="false" text="Button"/>
-</GridPane>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="692.0"
+            prefWidth="1035.0" style="-fx-background-color: #bdbdbd;" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LibraryController">
+
+    <Button fx:id="btnNewWindow" layoutX="464.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleBtnNewWindow"
+            text="Account Creation"/>
+</AnchorPane>
