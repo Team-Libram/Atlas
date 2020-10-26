@@ -48,4 +48,15 @@ public class ApplicationUser {
     public void setType(UserType type) {
         this.type = type;
     }
+
+    public ApplicationUser() {
+    }
+
+    public ApplicationUser(String id, String username, String name, Long age, UserType type) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.age = age;
+        this.type = type;
+    }
 }

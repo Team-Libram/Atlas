@@ -27,14 +27,12 @@ public class ApplicationStart extends Application {
 
     private static void initializeHibernate() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("library-persistence-unit");
-        Globals.setEntityManager(emf.createEntityManager());
+        Globals.entityManager = emf.createEntityManager();
 
         ApplicationUser user = new ApplicationUser();
         user.setUsername("admin");
-        user.setName("Peter");
         user.setAge(21L);
         user.setType(UserType.Administrator);
-
 
         IdentityManager identityManager = new IdentityManager();
         IdentityResult result = identityManager.create(user, "admin");

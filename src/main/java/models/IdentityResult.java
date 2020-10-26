@@ -1,11 +1,13 @@
 package models;
 
+import consts.StatusCodes;
+
 import java.util.Arrays;
 import java.util.Collections;
 
 public class IdentityResult {
     public boolean succeeded;
-    public int statusCode;
+    public StatusCodes statusCode;
     public Iterable<String> errors;
 
     protected IdentityResult(boolean success) {
@@ -13,7 +15,7 @@ public class IdentityResult {
         this.errors = Collections.emptyList();
     }
 
-    protected IdentityResult(int statusCode, String... errors)
+    protected IdentityResult(StatusCodes statusCode, String... errors)
     {
         if (errors.length == 0) {
             // TODO: Move this message in a resource file.
@@ -29,7 +31,7 @@ public class IdentityResult {
         return new IdentityResult(true);
     }
 
-    public static IdentityResult Failure(int statusCode, String... errors) {
+    public static IdentityResult Failure(StatusCodes statusCode, String... errors) {
         return new IdentityResult(statusCode, errors);
     }
 
