@@ -28,12 +28,19 @@ public class Account {
     @Column(nullable = false)
     private UserType type;
 
-    public String getId() {
-        return id;
+    public Account() {
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Account(String username, String password, String name, Long age, UserType type) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.type = type;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

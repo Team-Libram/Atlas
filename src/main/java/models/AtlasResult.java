@@ -6,17 +6,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class IdentityResult {
+public class AtlasResult {
     public boolean succeeded;
     public StatusCode statusCode;
     public List<String> errors;
 
-    protected IdentityResult() {
+    protected AtlasResult() {
         this.succeeded = true;
         this.errors = Collections.emptyList();
     }
 
-    protected IdentityResult(StatusCode statusCode, String... errors)
+    protected AtlasResult(StatusCode statusCode, String... errors)
     {
         if (errors.length == 0) {
             // TODO: Move this message in a resource file.
@@ -28,12 +28,12 @@ public class IdentityResult {
         this.errors = Arrays.asList(errors);
     }
 
-    public static IdentityResult Success() {
-        return new IdentityResult();
+    public static AtlasResult Success() {
+        return new AtlasResult();
     }
 
-    public static IdentityResult Failure(StatusCode statusCode, String... errors) {
-        return new IdentityResult(statusCode, errors);
+    public static AtlasResult Failure(StatusCode statusCode, String... errors) {
+        return new AtlasResult(statusCode, errors);
     }
 
     @Override

@@ -1,13 +1,14 @@
 package consts;
 
-public enum UserType {
-    Administrator,
-    Operator,
-    Reader;
+public enum StatusCode {
+    UnknownError,
+    InvalidPasswordError,
+    InvalidAccountError,
+    InvalidModel, NoSuchUserError;
 
     public static boolean contains(String test) {
 
-        for (UserType c : UserType.values()) {
+        for (StatusCode c : StatusCode.values()) {
             if (c.name().equals(test)) {
                 return true;
             }

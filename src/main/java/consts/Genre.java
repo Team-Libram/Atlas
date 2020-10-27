@@ -1,13 +1,11 @@
 package consts;
 
-public enum UserType {
-    Administrator,
-    Operator,
-    Reader;
+public enum Genre {
+    Thriller, Fiction;
 
     public static boolean contains(String test) {
 
-        for (UserType c : UserType.values()) {
+        for (Genre c : Genre.values()) {
             if (c.name().equals(test)) {
                 return true;
             }

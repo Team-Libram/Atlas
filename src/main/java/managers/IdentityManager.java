@@ -1,7 +1,7 @@
 package managers;
 
-import annotations.Authorize;
-import consts.StatusCodes;
+import consts.Genre;
+import consts.StatusCode;
 import consts.UserType;
 import consts.Utils;
 import entities.identity.Account;
@@ -31,12 +31,7 @@ public class IdentityManager {
             return isPasswordValid;
         }
 
-        Account account = new Account();
-        account.setUsername(user.getUsername());
-        account.setPassword(password);
-        account.setType(user.getType());
-        account.setAge(user.getAge());
-        account.setName(user.getName());
+        Account account = new Account(user.getUsername(), password, user.getName(), user.getAge(), user.getType());
 
         try {
             Globals.entityManager.getTransaction().begin();
@@ -45,7 +40,7 @@ public class IdentityManager {
 
             return IdentityResult.Success();
         } catch (Exception e) {
-            return IdentityResult.Failure(StatusCodes.UnknownError, e.getLocalizedMessage());
+            return IdentityResult.Failure(StatusCode.UnknownError, e.getLocalizedMessage());
         }
     }
 
@@ -53,29 +48,27 @@ public class IdentityManager {
         try {
             ApplicationUser user = this.getUserByUsername(username);
             if (user == null) {
-                return IdentityResult.Failure(StatusCodes.NoSuchUserError, "User with the provided username was not found.");
+                return IdentityResult.Failure(StatusCode.NoSuchUserError);
             }
 
             if (this.checkPassword(user, password)) {
                 this.signIn(user);
                 return IdentityResult.Success();
             } else {
-                return IdentityResult.Failure(StatusCodes.InvalidPasswordError, "Provided password is incorrect.");
+                return IdentityResult.Failure(StatusCode.InvalidPasswordError);
             }
         } catch (Exception e) {
-            return IdentityResult.Failure(StatusCodes.UnknownError, e.getLocalizedMessage());
+            return IdentityResult.Failure(StatusCode.UnknownError, e.getLocalizedMessage());
         }
     }
 
     private IdentityResult validateAccount(ApplicationUser user) {
         if (user == null) {
-            return IdentityResult.Failure(StatusCodes.InvalidAccountError, "The provided account object is null");
+            return IdentityResult.Failure(StatusCode.InvalidAccountError, "The provided account object is null");
         } else if (user.getUsername() == null || user.getUsername().length() < 4) {
-            return IdentityResult.Failure(StatusCodes.InvalidAccountError, "The provided account username must be at least 4 characters long");
-        } else if (user.getType() == null || (user.getType() != UserType.Administrator && user.getType() != UserType.Operator && user.getType() != UserType.Reader)) {
-            System.out.println(user.getType());
-            System.out.println(UserType.Administrator);
-            return IdentityResult.Failure(StatusCodes.InvalidAccountError, "The provided account type is invalid");
+            return IdentityResult.Failure(StatusCode.InvalidAccountError, "The provided account username must be at least 4 characters long");
+        } else if (user.getType() == null || !UserType.contains(user.getType().name())) {
+            return IdentityResult.Failure(StatusCode.InvalidAccountError, "The provided account type is invalid");
         }
 
         return IdentityResult.Success();
@@ -87,9 +80,9 @@ public class IdentityManager {
 
     private IdentityResult validatePassword(String password) {
         if (password == null) {
-            return IdentityResult.Failure(StatusCodes.InvalidPasswordError, "The provided password is null");
+            return IdentityResult.Failure(StatusCode.InvalidPasswordError, "The provided password is null");
         } else if (password.length() < 5) {
-            return IdentityResult.Failure(StatusCodes.InvalidPasswordError, "The provided password must be at least 5 characters long");
+            return IdentityResult.Failure(StatusCode.InvalidPasswordError, "The provided password must be at least 5 characters long");
         }
 
         return IdentityResult.Success();
