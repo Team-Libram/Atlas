@@ -1,6 +1,5 @@
 package managers;
 
-import consts.Genre;
 import consts.StatusCode;
 import consts.UserType;
 import consts.Utils;
@@ -20,7 +19,10 @@ public class IdentityManager {
     public IdentityManager() {
         this.sessionStore = new HashMap<>();
     }
+
     public IdentityResult create(ApplicationUser user, String password) {
+        System.out.println("Started creation of account...");
+
         IdentityResult isAccountValid = validateAccount(user);
         IdentityResult isPasswordValid = validatePassword(password);
         if (!isAccountValid.succeeded) {
@@ -38,6 +40,7 @@ public class IdentityManager {
             Globals.entityManager.persist(account);
             Globals.entityManager.getTransaction().commit();
 
+            System.out.println("Account creation successful.");
             return IdentityResult.Success();
         } catch (Exception e) {
             return IdentityResult.Failure(StatusCode.UnknownError, e.getLocalizedMessage());
@@ -46,6 +49,8 @@ public class IdentityManager {
 
     public IdentityResult login(String username, String password) {
         try {
+            System.out.println("Attempted login of account " + username + "...");
+
             ApplicationUser user = this.getUserByUsername(username);
             if (user == null) {
                 return IdentityResult.Failure(StatusCode.NoSuchUserError);
@@ -53,6 +58,8 @@ public class IdentityManager {
 
             if (this.checkPassword(user, password)) {
                 this.signIn(user);
+
+                System.out.println("Login of account " + username + " successful.");
                 return IdentityResult.Success();
             } else {
                 return IdentityResult.Failure(StatusCode.InvalidPasswordError);

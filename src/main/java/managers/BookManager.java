@@ -9,7 +9,9 @@ import models.BookModel;
 
 public class BookManager {
     public AtlasResult addBook(BookModel model) {
-        assert  model != null : "The provided model is null!";
+        System.out.println("Started creation of book...");
+
+        assert model != null : "The provided model is null!";
 
         if (model.getTitle() == null || model.getTitle().trim().isEmpty()) {
             return AtlasResult.Failure(StatusCode.InvalidModel, "The provided book title is invalid.");
@@ -29,6 +31,8 @@ public class BookManager {
             Globals.entityManager.getTransaction().begin();
             Globals.entityManager.persist(book);
             Globals.entityManager.getTransaction().commit();
+
+            System.out.println("Book creation successful.");
 
             return AtlasResult.Success();
         } catch (Exception e) {

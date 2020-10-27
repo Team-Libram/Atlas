@@ -16,8 +16,7 @@ public class AtlasResult {
         this.errors = Collections.emptyList();
     }
 
-    protected AtlasResult(StatusCode statusCode, String... errors)
-    {
+    protected AtlasResult(StatusCode statusCode, String... errors) {
         if (errors.length == 0) {
             // TODO: Move this message in a resource file.
             errors = new String[]{"An unknown failure has occurred."};

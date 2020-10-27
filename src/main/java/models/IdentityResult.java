@@ -16,8 +16,7 @@ public class IdentityResult {
         this.errors = Collections.emptyList();
     }
 
-    protected IdentityResult(StatusCode statusCode, String... errors)
-    {
+    protected IdentityResult(StatusCode statusCode, String... errors) {
         if (errors.length == 0) {
             // TODO: Move this message in a resource file.
             errors = new String[]{"An unknown failure has occurred."};

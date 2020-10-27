@@ -1,22 +1,22 @@
-import consts.Genre;
 import consts.UserType;
 import globals.Globals;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import managers.BookManager;
 import managers.IdentityManager;
 import models.ApplicationUser;
-import models.AtlasResult;
-import models.BookModel;
 import models.IdentityResult;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class ApplicationStart extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Started main process initialization...");
@@ -61,9 +61,5 @@ public class ApplicationStart extends Application {
         }
 
         System.out.println("Initial seed successful.");
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
