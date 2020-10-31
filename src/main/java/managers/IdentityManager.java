@@ -72,6 +72,10 @@ public class IdentityManager {
         return this.sessionStore.containsKey(sessionId);
     }
 
+    public void signOut(String sessionId) {
+        this.sessionStore.remove(sessionId);
+    }
+
     private IdentityResult validateAccount(AccountModel user) {
         if (user == null) {
             return IdentityResult.Failure(StatusCode.InvalidAccountError, "The provided account object is null");
