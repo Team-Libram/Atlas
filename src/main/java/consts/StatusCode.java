@@ -1,7 +1,7 @@
 package consts;
 
 public enum StatusCode {
-    UnknownError,
+    UnexpectedError,
     InvalidPasswordError,
     InvalidAccountError,
     InvalidModel, NoSuchUserError;

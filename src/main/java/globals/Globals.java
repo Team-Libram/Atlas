@@ -1,7 +1,9 @@
 package globals;
 
-import javax.persistence.EntityManager;
+import managers.BookManager;
+import managers.IdentityManager;
 
 public class Globals {
-    public static EntityManager entityManager;
+    public static IdentityManager identityManager;
+    public static BookManager bookManager;
 }

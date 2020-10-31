@@ -1,6 +1,7 @@
 package models;
 
 import consts.Genre;
+import entities.identity.Book;
 
 public class BookModel {
     private String id;
@@ -37,6 +38,10 @@ public class BookModel {
         this.author = author;
         this.genre = genre;
         this.integrity = 100;
+    }
+
+    public static BookModel from(Book book) {
+        return new BookModel(book.getId(), book.getTitle(), book.getAuthor(), book.getGenre(), book.getIntegrity());
     }
 
     public String getId() {

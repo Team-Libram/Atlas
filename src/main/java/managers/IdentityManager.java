@@ -4,20 +4,20 @@ import consts.StatusCode;
 import consts.UserType;
 import consts.Utils;
 import entities.identity.Account;
-import globals.Globals;
 import models.ApplicationUser;
 import models.IdentityResult;
 
-import javax.persistence.Query;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class IdentityManager {
     public final Map<String, String> sessionStore;
+    private final DbManager dbManager;
 
-    public IdentityManager() {
+    public IdentityManager(DbManager dbManager) {
         this.sessionStore = new HashMap<>();
+        this.dbManager = dbManager;
     }
 
     public IdentityResult create(ApplicationUser user, String password) {
@@ -36,14 +36,12 @@ public class IdentityManager {
         Account account = new Account(user.getUsername(), password, user.getName(), user.getAge(), user.getType());
 
         try {
-            Globals.entityManager.getTransaction().begin();
-            Globals.entityManager.persist(account);
-            Globals.entityManager.getTransaction().commit();
+            this.dbManager.insertEntity(account);
 
             System.out.println("Account creation successful.");
             return IdentityResult.Success();
         } catch (Exception e) {
-            return IdentityResult.Failure(StatusCode.UnknownError, e.getLocalizedMessage());
+            return IdentityResult.Failure(StatusCode.UnexpectedError, e.getLocalizedMessage());
         }
     }
 
@@ -51,7 +49,7 @@ public class IdentityManager {
         try {
             System.out.println("Attempted login of account " + username + "...");
 
-            ApplicationUser user = this.getUserByUsername(username);
+            ApplicationUser user = this.dbManager.getUserByUsername(username);
             if (user == null) {
                 return IdentityResult.Failure(StatusCode.NoSuchUserError);
             }
@@ -65,7 +63,7 @@ public class IdentityManager {
                 return IdentityResult.Failure(StatusCode.InvalidPasswordError);
             }
         } catch (Exception e) {
-            return IdentityResult.Failure(StatusCode.UnknownError, e.getLocalizedMessage());
+            return IdentityResult.Failure(StatusCode.UnexpectedError, e.getLocalizedMessage());
         }
     }
 
@@ -95,30 +93,12 @@ public class IdentityManager {
         return IdentityResult.Success();
     }
 
-    private Account getUserById(String id) {
-        Query query = Globals.entityManager.createQuery("select account from Account account where account.id = :id");
-        query.setParameter("id", Integer.parseInt(id));
-
-        return (Account) query.getSingleResult();
-    }
-
-    private ApplicationUser getUserByUsername(String username) {
-        Query query = Globals.entityManager.createQuery("select account from Account account where account.username = :username");
-        query.setParameter("username", username);
-        Account account = (Account) query.getSingleResult();
-        if (account == null) {
-            return null;
-        }
-
-        return new ApplicationUser(account.getId(), account.getUsername(), account.getName(), account.getAge(), account.getType());
-    }
-
     private boolean checkPassword(ApplicationUser user, String password) {
         if (user == null || password == null) {
             return false;
         }
 
-        Account account = this.getUserById(user.getId());
+        Account account = this.dbManager.getUserById(user.getId());
         String hashedPassword = Utils.getSHA256SecurePassword(password);
 
         return account.getPassword().equals(hashedPassword);

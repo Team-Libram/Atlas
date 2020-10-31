@@ -5,10 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import managers.BookManager;
+import managers.DbManager;
 import managers.IdentityManager;
 import models.ApplicationUser;
 import models.IdentityResult;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -46,20 +49,12 @@ public class ApplicationStart extends Application {
         System.out.println("Started initialization of hibernate...");
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("library-persistence-unit");
-        Globals.entityManager = emf.createEntityManager();
+        DbManager dbManager = new DbManager(emf.createEntityManager());
+        Globals.identityManager = new IdentityManager(dbManager);
+        Globals.bookManager = new BookManager(dbManager);
+
+        dbManager.seed();
+
         System.out.println("Hibernate initialization successful.");
-
-        System.out.println("Started initial seed...");
-        ApplicationUser user = new ApplicationUser("admin", null, 21L, UserType.Administrator);
-        //BookModel bookModel = new BookModel("Flight 19", "Grant Finnegan", Genre.Fiction);
-
-        IdentityManager identityManager = new IdentityManager();
-
-        IdentityResult result = identityManager.create(user, "admin");
-        if (!result.succeeded) {
-            System.out.println(result);
-        }
-
-        System.out.println("Initial seed successful.");
     }
 }

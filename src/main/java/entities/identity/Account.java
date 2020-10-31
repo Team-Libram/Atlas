@@ -7,13 +7,13 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class Account {
+public class Account implements IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)

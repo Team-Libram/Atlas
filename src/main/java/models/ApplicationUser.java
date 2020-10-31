@@ -1,6 +1,7 @@
 package models;
 
 import consts.UserType;
+import entities.identity.Account;
 
 public class ApplicationUser {
     private String id;
@@ -22,6 +23,10 @@ public class ApplicationUser {
         this.name = name;
         this.age = age;
         this.type = type;
+    }
+
+    public static ApplicationUser from(Account account) {
+        return new ApplicationUser(account.getId(), account.getUsername(), account.getName(), account.getAge(), account.getType());
     }
 
     public String getId() {

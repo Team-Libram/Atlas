@@ -8,6 +8,12 @@ import models.AtlasResult;
 import models.BookModel;
 
 public class BookManager {
+    private final DbManager dbManager;
+
+    public BookManager(DbManager dbManager) {
+        this.dbManager = dbManager;
+    }
+
     public AtlasResult addBook(BookModel model) {
         System.out.println("Started creation of book...");
 
@@ -28,15 +34,13 @@ public class BookManager {
         Book book = new Book(model.getTitle(), model.getAuthor(), model.getGenre());
 
         try {
-            Globals.entityManager.getTransaction().begin();
-            Globals.entityManager.persist(book);
-            Globals.entityManager.getTransaction().commit();
+            this.dbManager.insertEntity(book);
 
             System.out.println("Book creation successful.");
 
             return AtlasResult.Success();
         } catch (Exception e) {
-            return AtlasResult.Failure(StatusCode.UnknownError, e.getLocalizedMessage());
+            return AtlasResult.Failure(StatusCode.UnexpectedError, e.getLocalizedMessage());
         }
     }
 }
