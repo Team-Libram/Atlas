@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class IdentityManager {
-    public final Map<String, String> sessionStore;
+    private final Map<String, String> sessionStore;
     private final DbManager dbManager;
 
     public IdentityManager(DbManager dbManager) {
@@ -45,9 +45,9 @@ public class IdentityManager {
         }
     }
 
-    public IdentityResult login(String username, String password) {
+    public IdentityResult signIn(String username, String password) {
         try {
-            System.out.println("Attempted login of account " + username + "...");
+            System.out.println("Attempted sign in of account " + username + "...");
 
             AccountModel user = this.dbManager.getUserByUsername(username);
             if (user == null) {
@@ -55,16 +55,21 @@ public class IdentityManager {
             }
 
             if (this.checkPassword(user, password)) {
-                this.signIn(user);
+                String sessionId = UUID.randomUUID().toString();
+                this.sessionStore.put(sessionId, user.getId());
 
                 System.out.println("Login of account " + username + " successful.");
-                return IdentityResult.Success();
+                return IdentityResult.Success(sessionId);
             } else {
                 return IdentityResult.Failure(StatusCode.InvalidPasswordError);
             }
         } catch (Exception e) {
             return IdentityResult.Failure(StatusCode.UnexpectedError, e.getLocalizedMessage());
         }
+    }
+
+    public boolean authenticate(String sessionId) {
+        return this.sessionStore.containsKey(sessionId);
     }
 
     private IdentityResult validateAccount(AccountModel user) {
@@ -77,10 +82,6 @@ public class IdentityManager {
         }
 
         return IdentityResult.Success();
-    }
-
-    private void signIn(AccountModel user) {
-        this.sessionStore.put(UUID.randomUUID().toString(), user.getId());
     }
 
     private IdentityResult validatePassword(String password) {

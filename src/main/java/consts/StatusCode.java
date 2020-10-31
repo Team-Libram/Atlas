@@ -4,7 +4,8 @@ public enum StatusCode {
     UnexpectedError,
     InvalidPasswordError,
     InvalidAccountError,
-    InvalidModel, NoSuchUserError;
+    InvalidModel,
+    NoSuchUserError;
 
     public static boolean contains(String test) {
 
