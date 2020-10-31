@@ -3,7 +3,7 @@ package managers;
 import consts.Genre;
 import consts.UserType;
 import entities.identity.Account;
-import entities.identity.Book;
+import entities.Book;
 import entities.identity.IEntity;
 import globals.Globals;
 import models.AccountModel;

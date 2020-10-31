@@ -2,7 +2,7 @@ package managers;
 
 import consts.Genre;
 import consts.StatusCode;
-import entities.identity.Book;
+import entities.Book;
 import results.AtlasResult;
 import models.BookModel;
 

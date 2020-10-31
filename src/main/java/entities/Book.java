@@ -1,6 +1,7 @@
-package entities.identity;
+package entities;
 
 import consts.Genre;
+import entities.identity.IEntity;
 
 import javax.persistence.*;
 

@@ -1,7 +1,7 @@
 package models;
 
 import consts.Genre;
-import entities.identity.Book;
+import entities.Book;
 
 public class BookModel {
     private String id;
