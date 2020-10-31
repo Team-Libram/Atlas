@@ -1,4 +1,4 @@
-package models;
+package results;
 
 import consts.StatusCode;
 

@@ -3,8 +3,7 @@ package managers;
 import consts.Genre;
 import consts.StatusCode;
 import entities.identity.Book;
-import globals.Globals;
-import models.AtlasResult;
+import results.AtlasResult;
 import models.BookModel;
 
 public class BookManager {
