@@ -6,10 +6,10 @@ import entities.identity.Account;
 import entities.identity.Book;
 import entities.identity.IEntity;
 import globals.Globals;
-import models.ApplicationUser;
-import models.AtlasResult;
+import models.AccountModel;
+import results.AtlasResult;
 import models.BookModel;
-import models.IdentityResult;
+import results.IdentityResult;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -34,7 +34,7 @@ public class DbManager {
             }
 
         if (this.getUserByUsername("admin") == null) {
-            ApplicationUser user = new ApplicationUser("admin", null, null, UserType.Administrator);
+            AccountModel user = new AccountModel("admin", null, null, UserType.Administrator);
 
             IdentityResult result = Globals.identityManager.create(user, "admin");
             if (!result.succeeded) {
@@ -60,40 +60,40 @@ public class DbManager {
         return (Account) query.getSingleResult();
     }
 
-    public ApplicationUser getUserByUsername(String username) {
+    public AccountModel getUserByUsername(String username) {
         Query query = this.entityManager.createQuery("select account from Account account where account.username = :username");
         query.setParameter("username", username);
         try {
             Account account = (Account) query.getSingleResult();
 
-            return new ApplicationUser(account.getId(), account.getUsername(), account.getName(), account.getAge(), account.getType());
+            return new AccountModel(account.getId(), account.getUsername(), account.getName(), account.getAge(), account.getType());
         } catch (NoResultException e) {
             return null;
         }
     }
 
-    public List<ApplicationUser> getUsersByName(String name) {
+    public List<AccountModel> getUsersByName(String name) {
         Query query = this.entityManager.createQuery("select account from Account account where account.name = :name");
         query.setParameter("name", name);
 
         List<Account> accounts = (List<Account>) this.collectEntities(query);
-        return accounts.stream().map(ApplicationUser::from).collect(Collectors.toList());
+        return accounts.stream().map(AccountModel::from).collect(Collectors.toList());
     }
 
-    public List<ApplicationUser> getUsersByAge(Long age) {
+    public List<AccountModel> getUsersByAge(Long age) {
         Query query = this.entityManager.createQuery("select account from Account account where account.age = :age");
         query.setParameter("age", age);
 
         List<Account> accounts = (List<Account>) this.collectEntities(query);
-        return accounts.stream().map(ApplicationUser::from).collect(Collectors.toList());
+        return accounts.stream().map(AccountModel::from).collect(Collectors.toList());
     }
 
-    public List<ApplicationUser> getUsersByType(UserType type) {
+    public List<AccountModel> getUsersByType(UserType type) {
         Query query = this.entityManager.createQuery("select account from Account account where account.type = :type");
         query.setParameter("type", type);
 
         List<Account> accounts = (List<Account>) this.collectEntities(query);
-        return accounts.stream().map(ApplicationUser::from).collect(Collectors.toList());
+        return accounts.stream().map(AccountModel::from).collect(Collectors.toList());
     }
 
     public List<BookModel> getBooksByTitle(String title) {

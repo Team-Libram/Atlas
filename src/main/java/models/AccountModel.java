@@ -3,21 +3,21 @@ package models;
 import consts.UserType;
 import entities.identity.Account;
 
-public class ApplicationUser {
+public class AccountModel {
     private String id;
     private String username;
     private String name;
     private Long age;
     private UserType type;
 
-    public ApplicationUser(String username, String name, Long age, UserType type) {
+    public AccountModel(String username, String name, Long age, UserType type) {
         this.username = username;
         this.name = name;
         this.age = age;
         this.type = type;
     }
 
-    public ApplicationUser(String id, String username, String name, Long age, UserType type) {
+    public AccountModel(String id, String username, String name, Long age, UserType type) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -25,8 +25,8 @@ public class ApplicationUser {
         this.type = type;
     }
 
-    public static ApplicationUser from(Account account) {
-        return new ApplicationUser(account.getId(), account.getUsername(), account.getName(), account.getAge(), account.getType());
+    public static AccountModel from(Account account) {
+        return new AccountModel(account.getId(), account.getUsername(), account.getName(), account.getAge(), account.getType());
     }
 
     public String getId() {

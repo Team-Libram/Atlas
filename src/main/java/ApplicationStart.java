@@ -1,4 +1,3 @@
-import consts.UserType;
 import globals.Globals;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,10 +7,7 @@ import javafx.stage.Stage;
 import managers.BookManager;
 import managers.DbManager;
 import managers.IdentityManager;
-import models.ApplicationUser;
-import models.IdentityResult;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 

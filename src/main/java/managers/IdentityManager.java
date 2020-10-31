@@ -4,8 +4,8 @@ import consts.StatusCode;
 import consts.UserType;
 import consts.Utils;
 import entities.identity.Account;
-import models.ApplicationUser;
-import models.IdentityResult;
+import models.AccountModel;
+import results.IdentityResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class IdentityManager {
         this.dbManager = dbManager;
     }
 
-    public IdentityResult create(ApplicationUser user, String password) {
+    public IdentityResult create(AccountModel user, String password) {
         System.out.println("Started creation of account...");
 
         IdentityResult isAccountValid = validateAccount(user);
@@ -49,7 +49,7 @@ public class IdentityManager {
         try {
             System.out.println("Attempted login of account " + username + "...");
 
-            ApplicationUser user = this.dbManager.getUserByUsername(username);
+            AccountModel user = this.dbManager.getUserByUsername(username);
             if (user == null) {
                 return IdentityResult.Failure(StatusCode.NoSuchUserError);
             }
@@ -67,7 +67,7 @@ public class IdentityManager {
         }
     }
 
-    private IdentityResult validateAccount(ApplicationUser user) {
+    private IdentityResult validateAccount(AccountModel user) {
         if (user == null) {
             return IdentityResult.Failure(StatusCode.InvalidAccountError, "The provided account object is null");
         } else if (user.getUsername() == null || user.getUsername().length() < 4) {
@@ -79,7 +79,7 @@ public class IdentityManager {
         return IdentityResult.Success();
     }
 
-    private void signIn(ApplicationUser user) {
+    private void signIn(AccountModel user) {
         this.sessionStore.put(UUID.randomUUID().toString(), user.getId());
     }
 
@@ -93,7 +93,7 @@ public class IdentityManager {
         return IdentityResult.Success();
     }
 
-    private boolean checkPassword(ApplicationUser user, String password) {
+    private boolean checkPassword(AccountModel user, String password) {
         if (user == null || password == null) {
             return false;
         }
