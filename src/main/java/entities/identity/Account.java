@@ -11,7 +11,7 @@ public class Account implements IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private String id;
+    private int id;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -39,7 +39,7 @@ public class Account implements IEntity {
         this.type = type;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

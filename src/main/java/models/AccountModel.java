@@ -4,7 +4,7 @@ import consts.UserType;
 import entities.identity.Account;
 
 public class AccountModel {
-    private String id;
+    private int id;
     private String username;
     private String name;
     private Long age;
@@ -17,7 +17,7 @@ public class AccountModel {
         this.type = type;
     }
 
-    public AccountModel(String id, String username, String name, Long age, UserType type) {
+    public AccountModel(int id, String username, String name, Long age, UserType type) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -29,11 +29,11 @@ public class AccountModel {
         return new AccountModel(account.getId(), account.getUsername(), account.getName(), account.getAge(), account.getType());
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,9 +1,9 @@
 package consts;
 
 public enum UserType {
-    Administrator,
+    Reader,
     Operator,
-    Reader;
+    Administrator;
 
     public static boolean contains(String test) {
 

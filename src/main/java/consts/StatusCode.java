@@ -8,7 +8,6 @@ public enum StatusCode {
     NoSuchUserError;
 
     public static boolean contains(String test) {
-
         for (StatusCode c : StatusCode.values()) {
             if (c.name().equals(test)) {
                 return true;

@@ -1,3 +1,4 @@
+import consts.NotAuthorizedException;
 import globals.Globals;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +50,9 @@ public class ApplicationStart extends Application {
         Globals.identityManager = new IdentityManager(dbManager);
         Globals.bookManager = new BookManager(dbManager);
 
-        dbManager.seed();
+        try {
+            dbManager.seed();
+        } catch (NotAuthorizedException ignored) {}
 
         System.out.println("Hibernate initialization successful.");
     }

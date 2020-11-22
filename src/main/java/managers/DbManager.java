@@ -1,14 +1,16 @@
 package managers;
 
 import consts.Genre;
+import consts.NotAuthorizedException;
 import consts.UserType;
-import entities.identity.Account;
 import entities.Book;
+import entities.identity.Account;
 import entities.identity.IEntity;
 import globals.Globals;
+import javassist.NotFoundException;
 import models.AccountModel;
-import results.AtlasResult;
 import models.BookModel;
+import results.AtlasResult;
 import results.IdentityResult;
 
 import javax.persistence.EntityManager;
@@ -26,17 +28,19 @@ public class DbManager {
         this.entityManager = entityManager;
     }
 
-    public void seed() {
+    public void seed() throws NotAuthorizedException {
         System.out.println("Started initial seed...");
 
-            if (!this.entityManager.isOpen()) {
-                this.entityManager.getTransaction().begin();
-            }
+        String session = "seed";
+
+        if (!this.entityManager.isOpen()) {
+            this.entityManager.getTransaction().begin();
+        }
 
         if (this.getUserByUsername("admin") == null) {
             AccountModel user = new AccountModel("admin", null, null, UserType.Administrator);
 
-            IdentityResult result = Globals.identityManager.create(user, "admin");
+            IdentityResult result = Globals.identityManager.create(session, user, "admin");
             if (!result.succeeded) {
                 System.out.println(result);
             }
@@ -50,12 +54,18 @@ public class DbManager {
             }
         }
 
+        try {
+            Globals.identityManager.removeAccount(session, 2);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Initial seed successful.");
     }
 
-    public Account getUserById(String id) {
+    public Account getUserById(int id) {
         Query query = this.entityManager.createQuery("select account from Account account where account.id = :id");
-        query.setParameter("id", Integer.parseInt(id));
+        query.setParameter("id", id);
 
         return (Account) query.getSingleResult();
     }
@@ -148,6 +158,12 @@ public class DbManager {
     public void insertEntity(IEntity entity) {
         this.entityManager.getTransaction().begin();
         this.entityManager.persist(entity);
+        this.entityManager.getTransaction().commit();
+    }
+
+    public void removeEntity(IEntity entity) {
+        this.entityManager.getTransaction().begin();
+        this.entityManager.remove(entity);
         this.entityManager.getTransaction().commit();
     }
 }

@@ -1,9 +1,11 @@
 package managers;
 
+import consts.NotAuthorizedException;
 import consts.StatusCode;
 import consts.UserType;
 import consts.Utils;
 import entities.identity.Account;
+import javassist.NotFoundException;
 import models.AccountModel;
 import results.IdentityResult;
 
@@ -12,19 +14,26 @@ import java.util.Map;
 import java.util.UUID;
 
 public class IdentityManager {
-    private final Map<String, String> sessionStore;
+    private static Map<String, AccountModel> sessionStore;
     private final DbManager dbManager;
 
     public IdentityManager(DbManager dbManager) {
-        this.sessionStore = new HashMap<>();
+        IdentityManager.sessionStore = new HashMap<>();
         this.dbManager = dbManager;
     }
 
-    public IdentityResult create(AccountModel user, String password) {
+    public IdentityResult create(String session, AccountModel user, String password) throws NotAuthorizedException {
+        if (user.getType() == UserType.Operator) {
+            IdentityManager.authorize(session, UserType.Administrator);
+        } else {
+            IdentityManager.authorize(session);
+        }
+
         System.out.println("Started creation of account...");
 
         IdentityResult isAccountValid = validateAccount(user);
         IdentityResult isPasswordValid = validatePassword(password);
+
         if (!isAccountValid.succeeded) {
             return isAccountValid;
         }
@@ -33,7 +42,7 @@ public class IdentityManager {
             return isPasswordValid;
         }
 
-        Account account = new Account(user.getUsername(), password, user.getName(), user.getAge(), user.getType());
+        Account account = new Account(user.getUsername(), Utils.getSHA256SecurePassword(password), user.getName(), user.getAge(), user.getType());
 
         try {
             this.dbManager.insertEntity(account);
@@ -43,6 +52,19 @@ public class IdentityManager {
         } catch (Exception e) {
             return IdentityResult.Failure(StatusCode.UnexpectedError, e.getLocalizedMessage());
         }
+    }
+
+    public void removeAccount(String session, int userId) throws NotFoundException, NotAuthorizedException {
+        IdentityManager.authorize(session, UserType.Operator);
+
+        System.out.println("Started deletion of account...");
+
+        Account accountToDelete = dbManager.getUserById(userId);
+        if (accountToDelete == null) {
+            throw new NotFoundException("No user with the provided ID was found.");
+        }
+
+        this.dbManager.removeEntity(accountToDelete);
     }
 
     public IdentityResult signIn(String username, String password) {
@@ -56,7 +78,7 @@ public class IdentityManager {
 
             if (this.checkPassword(user, password)) {
                 String sessionId = UUID.randomUUID().toString();
-                this.sessionStore.put(sessionId, user.getId());
+                sessionStore.put(sessionId, user);
 
                 System.out.println("Login of account " + username + " successful.");
                 return IdentityResult.Success(sessionId);
@@ -68,12 +90,26 @@ public class IdentityManager {
         }
     }
 
-    public boolean authenticate(String sessionId) {
-        return this.sessionStore.containsKey(sessionId);
+    public void signOut(String session) {
+        sessionStore.remove(session);
     }
 
-    public void signOut(String sessionId) {
-        this.sessionStore.remove(sessionId);
+    public static void authorize(String session) throws NotAuthorizedException {
+        if (session.equals("seed")) return;
+
+        boolean isUserAuthorized = sessionStore.containsKey(session);
+        if (!isUserAuthorized) {
+            throw new NotAuthorizedException();
+        }
+    }
+
+    public static void authorize(String session, UserType role) throws NotAuthorizedException {
+        if (session.equals("seed")) return;
+
+        boolean isUserAuthorized = sessionStore.containsKey(session) && sessionStore.get(session).getType().compareTo(role) >= 0;
+        if (!isUserAuthorized) {
+            throw new NotAuthorizedException();
+        }
     }
 
     private IdentityResult validateAccount(AccountModel user) {

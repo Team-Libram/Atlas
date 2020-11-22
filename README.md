@@ -1,4 +1,4 @@
-# Library
+# Atlas Library
 Technical University - Varna
 * FITA faculty
 * SIT speciality
